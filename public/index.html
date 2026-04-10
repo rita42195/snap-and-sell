@@ -3,29 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#667eea">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Snap & Sell – צלם ומכור</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  
+
   :root {
-    --bg: #f4f6fb;
+    --grad: linear-gradient(135deg, #667eea, #764ba2);
+    --grad-btn: linear-gradient(135deg, #667eea, #764ba2);
+    --grad-light: linear-gradient(135deg, rgba(102,126,234,0.08), rgba(118,75,162,0.06));
+    --bg: #f5f5fa;
     --card: #ffffff;
     --text: #1a1a2e;
-    --text-soft: #6b7194;
-    --accent: #6c5ce7;
-    --accent-light: #a29bfe;
-    --accent-glow: rgba(108, 92, 231, 0.12);
-    --green: #00b894;
-    --orange: #fdcb6e;
-    --pink: #fd79a8;
-    --radius: 20px;
-    --radius-sm: 14px;
-    --shadow: 0 2px 16px rgba(26, 26, 46, 0.06);
-    --shadow-lg: 0 8px 32px rgba(108, 92, 231, 0.12);
+    --text-soft: #7c7c9a;
+    --accent: #667eea;
+    --accent2: #764ba2;
+    --green: #10b981;
+    --radius: 18px;
+    --radius-sm: 13px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.04);
+    --shadow-lg: 0 6px 24px rgba(102,126,234,0.15);
   }
 
   body {
@@ -38,31 +38,26 @@
   }
 
   .header {
-    background: var(--card);
-    padding: 18px 20px;
+    background: var(--grad);
+    padding: 20px 20px 18px;
     display: flex; align-items: center; gap: 14px;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.04);
     position: sticky; top: 0; z-index: 10;
   }
   .logo {
-    width: 46px; height: 46px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--accent), var(--pink));
+    width: 44px; height: 44px; border-radius: 13px;
+    background: rgba(255,255,255,0.2);
     display: flex; align-items: center; justify-content: center;
-    font-size: 22px; flex-shrink: 0;
-    box-shadow: 0 4px 14px rgba(108, 92, 231, 0.25);
+    font-size: 20px; flex-shrink: 0;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   }
-  .header h1 {
-    font-size: 19px; font-weight: 800; color: var(--text);
-    letter-spacing: -0.3px;
-  }
-  .header p { font-size: 12px; color: var(--text-soft); margin-top: 1px; font-weight: 500; }
+  .header h1 { font-size: 19px; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
+  .header p { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 1px; font-weight: 500; }
 
   .body { padding: 20px 16px 40px; max-width: 500px; margin: 0 auto; }
 
   .drop-zone {
     background: var(--card);
-    border: 2.5px dashed #ddd;
+    border: 2px dashed #dcdce6;
     border-radius: var(--radius);
     padding: 48px 24px;
     text-align: center;
@@ -72,25 +67,23 @@
   }
   .drop-zone:active {
     border-color: var(--accent);
-    background: var(--accent-glow);
+    background: rgba(102,126,234,0.03);
   }
   .drop-icon {
-    width: 72px; height: 72px; margin: 0 auto 16px;
-    background: linear-gradient(135deg, var(--accent-glow), rgba(253,121,168,0.08));
+    width: 68px; height: 68px; margin: 0 auto 14px;
+    background: var(--grad-light);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 32px;
+    font-size: 28px;
   }
   .drop-text { font-size: 16px; font-weight: 700; color: var(--text); }
-  .drop-hint { font-size: 12px; color: var(--text-soft); margin-top: 6px; font-weight: 500; }
+  .drop-hint { font-size: 12px; color: var(--text-soft); margin-top: 5px; font-weight: 500; }
 
   .img-wrap {
     border-radius: var(--radius); overflow: hidden;
     box-shadow: var(--shadow-lg); margin-bottom: 16px;
   }
-  .preview-img {
-    width: 100%; display: block; object-fit: cover;
-  }
+  .preview-img { width: 100%; display: block; object-fit: cover; }
   .preview-img.big { max-height: 340px; }
   .preview-img.small { max-height: 180px; }
 
@@ -103,19 +96,19 @@
   .btn:active { transform: scale(0.97); }
   .btn-primary {
     flex: 1; color: #fff;
-    background: linear-gradient(135deg, var(--accent), #8b7cf6);
-    box-shadow: 0 4px 16px rgba(108, 92, 231, 0.3);
+    background: var(--grad-btn);
+    box-shadow: 0 4px 16px rgba(102,126,234,0.3);
   }
-  .btn-primary:disabled { opacity: 0.6; pointer-events: none; }
+  .btn-primary:disabled { opacity: 0.55; pointer-events: none; }
   .btn-secondary {
     color: var(--text-soft);
     background: var(--card);
-    border: 1.5px solid #e8e8ef;
+    border: 1.5px solid #e4e4ee;
   }
   .btn-success {
     flex: 1; color: #fff;
-    background: linear-gradient(135deg, var(--green), #55efc4);
-    box-shadow: 0 4px 16px rgba(0, 184, 148, 0.25);
+    background: linear-gradient(135deg, #10b981, #34d399);
+    box-shadow: 0 4px 16px rgba(16,185,129,0.25);
   }
 
   .card {
@@ -128,26 +121,26 @@
   .listing-title {
     font-size: 20px; font-weight: 800; color: var(--text);
     margin-bottom: 18px; line-height: 1.4;
-  }
-  .listing-title::before {
-    content: '🏷️'; margin-left: 6px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid transparent;
+    border-image: var(--grad) 1;
   }
 
   .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
   .field {
     background: var(--bg); border-radius: 12px; padding: 11px 12px;
-    border: 1px solid rgba(0,0,0,0.03);
   }
   .field-label {
-    display: block; font-size: 10px; font-weight: 700; color: var(--accent);
+    display: block; font-size: 10px; font-weight: 700;
+    color: var(--accent);
     text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px;
   }
   .field-value { font-size: 13px; color: var(--text); font-weight: 600; }
 
   .desc-block {
-    background: linear-gradient(135deg, var(--accent-glow), rgba(253,121,168,0.04));
+    background: var(--grad-light);
     border-radius: 14px; padding: 14px 16px;
-    border: 1px solid rgba(108, 92, 231, 0.08);
+    border-right: 3px solid var(--accent);
   }
   .desc-label {
     font-size: 10px; font-weight: 700; color: var(--accent);
@@ -155,7 +148,7 @@
   }
   .desc-text { font-size: 14px; line-height: 1.75; color: var(--text); font-weight: 500; }
 
-  .error { margin-top: 12px; color: var(--pink); font-size: 13px; text-align: center; font-weight: 600; }
+  .error { margin-top: 12px; color: #e74c6f; font-size: 13px; text-align: center; font-weight: 600; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
@@ -168,18 +161,18 @@
     100% { background-position: 200% center; }
   }
   .loading-btn {
-    background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent));
+    background: linear-gradient(90deg, #667eea, #a78bfa, #667eea);
     background-size: 200% auto;
-    animation: shimmer 2s linear infinite;
+    animation: shimmer 1.8s linear infinite;
   }
 
   .hidden { display: none; }
 
   .badge {
-    text-align: center; margin-top: 28px;
+    text-align: center; margin-top: 24px;
     font-size: 11px; color: var(--text-soft); font-weight: 500;
   }
-  .badge span { 
+  .badge span {
     background: var(--card); padding: 6px 14px; border-radius: 20px;
     box-shadow: var(--shadow);
   }
