@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Snap & Sell – צלם ומכור</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Rubik', sans-serif;
+    background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+    color: #e2e8f0;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  .header {
+    padding: 20px 16px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logo {
+    font-size: 28px; width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 13px;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    flex-shrink: 0;
+  }
+  .header h1 { font-size: 20px; font-weight: 700; color: #f8fafc; letter-spacing: -0.5px; }
+  .header p { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+  .body { padding: 20px 16px 40px; max-width: 480px; margin: 0 auto; }
+
+  /* Drop zone */
+  .drop-zone {
+    border: 2px dashed rgba(248,250,252,0.15);
+    border-radius: 20px; padding: 52px 20px; text-align: center;
+    cursor: pointer; background: rgba(255,255,255,0.02);
+    transition: border-color .2s;
+  }
+  .drop-zone:active { border-color: rgba(251,191,36,0.4); }
+  .drop-icon { font-size: 44px; margin-bottom: 10px; }
+  .drop-text { font-size: 15px; font-weight: 500; color: #cbd5e1; }
+  .drop-hint { font-size: 11px; color: #64748b; margin-top: 5px; }
+
+  /* Preview */
+  .preview-img {
+    width: 100%; border-radius: 16px; display: block;
+    object-fit: cover;
+  }
+  .preview-img.big { max-height: 340px; }
+  .preview-img.small { max-height: 190px; }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 10px; margin-top: 14px; }
+  .btn {
+    padding: 13px 16px; border: none; border-radius: 12px;
+    font-size: 14px; font-weight: 600; font-family: 'Rubik', sans-serif;
+    cursor: pointer; transition: opacity .15s;
+  }
+  .btn:active { opacity: 0.8; }
+  .btn-primary {
+    flex: 1; color: #0f172a;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  }
+  .btn-secondary {
+    color: #94a3b8; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .btn:disabled { opacity: 0.6; pointer-events: none; }
+
+  /* Card */
+  .card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px; padding: 20px 16px; margin-top: 6px;
+  }
+  .listing-title {
+    font-size: 19px; font-weight: 700; color: #fbbf24;
+    margin-bottom: 16px; line-height: 1.4;
+  }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 16px; }
+  .field {
+    background: rgba(0,0,0,0.2); border-radius: 10px; padding: 9px 11px;
+  }
+  .field-label {
+    display: block; font-size: 10px; font-weight: 600; color: #64748b;
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;
+  }
+  .field-value { font-size: 13px; color: #e2e8f0; font-weight: 500; }
+  .desc-block { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 13px; }
+  .desc-label {
+    font-size: 10px; font-weight: 600; color: #64748b;
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;
+  }
+  .desc-text { font-size: 13px; line-height: 1.7; color: #cbd5e1; }
+
+  .error { margin-top: 10px; color: #f87171; font-size: 12px; text-align: center; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate { animation: fadeUp .3s ease; }
+
+  @keyframes pulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+  .pulsing { animation: pulse 1.6s infinite; }
+
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">📸</div>
+  <div>
+    <h1>Snap & Sell</h1>
+    <p>צלם → מודעת מכירה מיידית</p>
+  </div>
+</div>
+
+<div class="body">
+  <!-- Step 1: Upload -->
+  <div id="step-upload" class="drop-zone" onclick="document.getElementById('file-input').click()">
+    <div class="drop-icon">📷</div>
+    <p class="drop-text">לחצו לצלם או להעלות תמונה</p>
+    <p class="drop-hint">JPG, PNG, WebP</p>
+    <input id="file-input" type="file" accept="image/*" capture="environment" style="display:none">
+  </div>
+
+  <!-- Step 2: Preview + Analyze -->
+  <div id="step-preview" class="hidden animate">
+    <img id="preview-img" class="preview-img big" src="" alt="">
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="reset()">✕ נקה</button>
+      <button id="analyze-btn" class="btn btn-primary" onclick="analyze()">✨ צור מודעה</button>
+    </div>
+    <p id="error-msg" class="error hidden"></p>
+  </div>
+
+  <!-- Step 3: Result -->
+  <div id="step-result" class="hidden animate">
+    <img id="result-img" class="preview-img small" src="" alt="">
+    <div class="card">
+      <h2 id="result-title" class="listing-title"></h2>
+      <div id="result-fields" class="fields"></div>
+      <div class="desc-block">
+        <p class="desc-label">תיאור למודעה</p>
+        <p id="result-desc" class="desc-text"></p>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="reset()">📷 תמונה חדשה</button>
+      <button id="copy-btn" class="btn btn-primary" onclick="copyListing()">📋 העתק מודעה</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SYSTEM_PROMPT = `אתה עוזר למכירת חפצים יד שנייה. המשתמש מצלם תמונה של חפץ ואתה צריך לנתח אותו ולייצר פרטים למודעת מכירה.
+
+ענה אך ורק ב-JSON תקין בלי backticks או טקסט נוסף, בפורמט הבא:
+{
+  "title": "כותרת קצרה וקולעת למודעה",
+  "fields": [
+    {"label": "סוג פריט", "value": "..."},
+    {"label": "חומר", "value": "..."},
+    {"label": "צבע", "value": "..."},
+    {"label": "סגנון", "value": "..."},
+    {"label": "מצב משוער", "value": "..."},
+    {"label": "מידות משוערות", "value": "..."}
+  ],
+  "description": "תיאור של 2-3 משפטים למודעת מכירה"
+}
+
+הוסף שדות רלוונטיים נוספים לפי סוג הפריט (למשל מגירות לשולחן, מספר מקומות ישיבה לספה, מותג אם ניתן לזהות). כתוב הכל בעברית.`;
+
+const loadingMsgs = ["🔍 בוחן את הפריט...", "📐 מנתח פרטים...", "🏷️ כותב מודעה..."];
+let imageBase64 = null;
+let imageType = null;
+let currentListing = null;
+
+const $ = id => document.getElementById(id);
+
+$('file-input').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file || !file.type.startsWith('image/')) return;
+  imageType = file.type;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const dataUrl = reader.result;
+    imageBase64 = dataUrl.split(',')[1];
+    $('preview-img').src = dataUrl;
+    $('step-upload').classList.add('hidden');
+    $('step-preview').classList.remove('hidden');
+  };
+  reader.readAsDataURL(file);
+});
+
+function reset() {
+  imageBase64 = null; imageType = null; currentListing = null;
+  $('file-input').value = '';
+  $('step-upload').classList.remove('hidden');
+  $('step-preview').classList.add('hidden');
+  $('step-result').classList.add('hidden');
+  $('error-msg').classList.add('hidden');
+  $('analyze-btn').disabled = false;
+  $('analyze-btn').innerHTML = '✨ צור מודעה';
+}
+
+async function analyze() {
+  if (!imageBase64) return;
+  const btn = $('analyze-btn');
+  btn.disabled = true;
+  $('error-msg').classList.add('hidden');
+
+  let msgIdx = 0;
+  btn.innerHTML = `<span class="pulsing">${loadingMsgs[0]}</span>`;
+  const interval = setInterval(() => {
+    msgIdx = (msgIdx + 1) % loadingMsgs.length;
+    btn.innerHTML = `<span class="pulsing">${loadingMsgs[msgIdx]}</span>`;
+  }, 2200);
+
+  try {
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: imageType, data: imageBase64 } },
+            { type: 'text', text: 'נתח את הפריט הזה למודעת מכירה.' }
+          ]
+        }]
+      })
+    });
+
+    const data = await res.json();
+    const text = (data.content || []).map(c => c.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    currentListing = JSON.parse(clean);
+    showResult();
+  } catch (e) {
+    console.error(e);
+    $('error-msg').textContent = 'שגיאה בניתוח. נסו שוב.';
+    $('error-msg').classList.remove('hidden');
+    btn.disabled = false;
+    btn.innerHTML = '✨ צור מודעה';
+  } finally {
+    clearInterval(interval);
+  }
+}
+
+function showResult() {
+  $('result-img').src = $('preview-img').src;
+  $('result-title').textContent = currentListing.title;
+  $('result-desc').textContent = currentListing.description;
+
+  const fieldsEl = $('result-fields');
+  fieldsEl.innerHTML = '';
+  currentListing.fields.forEach(f => {
+    fieldsEl.innerHTML += `<div class="field"><span class="field-label">${f.label}</span><span class="field-value">${f.value}</span></div>`;
+  });
+
+  $('step-preview').classList.add('hidden');
+  $('step-result').classList.remove('hidden');
+}
+
+function copyListing() {
+  if (!currentListing) return;
+  const lines = [
+    currentListing.title, '',
+    ...currentListing.fields.map(f => `${f.label}: ${f.value}`),
+    '', currentListing.description
+  ];
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const btn = $('copy-btn');
+    btn.textContent = '✓ הועתק!';
+    setTimeout(() => { btn.textContent = '📋 העתק מודעה'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
