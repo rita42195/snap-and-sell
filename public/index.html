@@ -32,8 +32,7 @@
     font-family: 'Heebo', sans-serif;
     background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
-    min-height: 100dvh;
+    min-height: 100vh; min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -48,7 +47,6 @@
     background: rgba(255,255,255,0.2);
     display: flex; align-items: center; justify-content: center;
     font-size: 20px; flex-shrink: 0;
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   }
   .header h1 { font-size: 19px; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
   .header p { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 1px; font-weight: 500; }
@@ -67,58 +65,36 @@
     transition: all .2s;
     box-shadow: var(--shadow);
   }
-  .drop-zone:active {
-    border-color: var(--accent);
-    background: rgba(102,126,234,0.03);
-  }
+  .drop-zone:active { border-color: var(--accent); background: rgba(102,126,234,0.03); }
   .drop-icon {
     width: 60px; height: 60px; margin: 0 auto 12px;
-    background: var(--grad-light);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px;
+    background: var(--grad-light); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 26px;
   }
   .drop-text { font-size: 16px; font-weight: 700; color: var(--text); }
   .drop-hint { font-size: 12px; color: var(--text-soft); margin-top: 5px; font-weight: 500; }
 
-  /* Multi-photo thumbnails */
-  .thumbs-row {
-    display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
-  }
+  .thumbs-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
   .thumb-wrap {
     position: relative; width: 90px; height: 90px;
-    border-radius: 12px; overflow: hidden;
-    box-shadow: var(--shadow);
-    flex-shrink: 0;
+    border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); flex-shrink: 0;
   }
-  .thumb-wrap img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-  }
+  .thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .thumb-remove {
     position: absolute; top: 4px; left: 4px;
     width: 22px; height: 22px; border-radius: 50%;
     background: rgba(0,0,0,0.6); color: #fff;
     border: none; font-size: 12px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Heebo', sans-serif;
   }
   .thumb-add {
     width: 90px; height: 90px; border-radius: 12px;
     border: 2px dashed #dcdce6; background: var(--card);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    cursor: pointer; font-size: 24px; color: var(--accent);
-    flex-shrink: 0;
+    cursor: pointer; font-size: 24px; color: var(--accent); flex-shrink: 0;
   }
   .thumb-add span { font-size: 10px; color: var(--text-soft); margin-top: 2px; }
-
-  .img-wrap {
-    border-radius: var(--radius); overflow: hidden;
-    box-shadow: var(--shadow-lg); margin-bottom: 16px;
-  }
-  .preview-img { width: 100%; display: block; object-fit: cover; }
-  .preview-img.big { max-height: 280px; }
-  .preview-img.small { max-height: 180px; }
 
   .btn-row { display: flex; gap: 10px; margin-top: 16px; }
   .btn-row-3 { display: flex; gap: 8px; margin-top: 16px; }
@@ -128,105 +104,120 @@
     cursor: pointer; transition: all .15s; letter-spacing: 0.2px;
   }
   .btn:active { transform: scale(0.97); }
-  .btn-primary {
-    flex: 1; color: #fff;
-    background: var(--grad-btn);
-    box-shadow: 0 4px 16px rgba(102,126,234,0.3);
-  }
+  .btn-primary { flex: 1; color: #fff; background: var(--grad-btn); box-shadow: 0 4px 16px rgba(102,126,234,0.3); }
   .btn-primary:disabled { opacity: 0.55; pointer-events: none; }
-  .btn-secondary {
-    color: var(--text-soft);
-    background: var(--card);
-    border: 1.5px solid #e4e4ee;
-  }
-  .btn-success {
-    flex: 1; color: #fff;
-    background: linear-gradient(135deg, #10b981, #34d399);
-    box-shadow: 0 4px 16px rgba(16,185,129,0.25);
-  }
-  .btn-whatsapp {
-    flex: 1; color: #fff;
-    background: linear-gradient(135deg, #25d366, #128c7e);
-    box-shadow: 0 4px 16px rgba(37,211,102,0.25);
-  }
+  .btn-secondary { color: var(--text-soft); background: var(--card); border: 1.5px solid #e4e4ee; }
+  .btn-success { flex: 1; color: #fff; background: linear-gradient(135deg, #10b981, #34d399); box-shadow: 0 4px 16px rgba(16,185,129,0.25); }
+  .btn-whatsapp { flex: 1; color: #fff; background: linear-gradient(135deg, #25d366, #128c7e); box-shadow: 0 4px 16px rgba(37,211,102,0.25); }
 
   .card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 22px 18px;
-    box-shadow: var(--shadow);
-    margin-top: 8px;
+    background: var(--card); border-radius: var(--radius);
+    padding: 22px 18px; box-shadow: var(--shadow); margin-top: 8px;
   }
+
+  /* Language toggle */
+  .lang-toggle {
+    display: flex; gap: 0; margin-bottom: 16px;
+    background: var(--bg); border-radius: 10px; overflow: hidden;
+    border: 1px solid #e4e4ee;
+  }
+  .lang-btn {
+    flex: 1; padding: 8px 12px; border: none;
+    font-size: 13px; font-weight: 600; font-family: 'Heebo', sans-serif;
+    cursor: pointer; background: transparent; color: var(--text-soft);
+    transition: all .2s;
+  }
+  .lang-btn.active {
+    background: var(--grad-btn); color: #fff;
+  }
+
+  /* Editable fields */
+  .edit-hint {
+    font-size: 11px; color: var(--accent); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 4px; font-weight: 600;
+  }
+
   .listing-title {
     font-size: 20px; font-weight: 800; color: var(--text);
-    margin-bottom: 18px; line-height: 1.4;
-    padding-bottom: 14px;
-    border-bottom: 2px solid transparent;
-    border-image: var(--grad) 1;
+    margin-bottom: 14px; line-height: 1.4;
+    padding: 8px 10px; border-radius: 10px;
+    border: 1.5px dashed transparent;
+    transition: border-color .2s;
+    outline: none;
+  }
+  .listing-title:hover, .listing-title:focus {
+    border-color: #dcdce6; background: var(--bg);
   }
 
   .price-badge {
     display: inline-flex; align-items: center; gap: 6px;
     background: linear-gradient(135deg, #fef3c7, #fde68a);
-    color: #92400e;
-    padding: 8px 16px; border-radius: 20px;
-    font-size: 16px; font-weight: 800;
-    margin-bottom: 16px;
+    color: #92400e; padding: 8px 16px; border-radius: 20px;
+    font-size: 16px; font-weight: 800; margin-bottom: 16px;
     box-shadow: 0 2px 8px rgba(251,191,36,0.2);
   }
   .price-badge .label { font-size: 12px; font-weight: 600; }
+  .price-edit {
+    background: transparent; border: none; font-size: 16px;
+    font-weight: 800; color: #92400e; font-family: 'Heebo', sans-serif;
+    width: 120px; outline: none; text-align: center;
+    border-bottom: 1.5px dashed rgba(146,64,14,0.3);
+  }
+
+  /* Tags */
+  .tags-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tag {
+    background: var(--grad-light); color: var(--accent);
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+    border: 1px solid rgba(102,126,234,0.12);
+  }
 
   .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
-  .field {
-    background: var(--bg); border-radius: 12px; padding: 11px 12px;
-  }
+  .field { background: var(--bg); border-radius: 12px; padding: 11px 12px; }
   .field-label {
-    display: block; font-size: 10px; font-weight: 700;
-    color: var(--accent);
+    display: block; font-size: 10px; font-weight: 700; color: var(--accent);
     text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px;
   }
-  .field-value { font-size: 13px; color: var(--text); font-weight: 600; }
+  .field-value {
+    font-size: 13px; color: var(--text); font-weight: 600;
+    outline: none; border: none; background: transparent;
+    width: 100%; font-family: 'Heebo', sans-serif;
+    border-bottom: 1.5px dashed transparent;
+    transition: border-color .2s; padding: 0;
+  }
+  .field-value:hover, .field-value:focus {
+    border-color: #dcdce6;
+  }
 
   .desc-block {
-    background: var(--grad-light);
-    border-radius: 14px; padding: 14px 16px;
+    background: var(--grad-light); border-radius: 14px; padding: 14px 16px;
     border-right: 3px solid var(--accent);
   }
   .desc-label {
     font-size: 10px; font-weight: 700; color: var(--accent);
     text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px;
   }
-  .desc-text { font-size: 14px; line-height: 1.75; color: var(--text); font-weight: 500; }
+  .desc-text {
+    font-size: 14px; line-height: 1.75; color: var(--text); font-weight: 500;
+    outline: none; border: none; background: transparent;
+    width: 100%; min-height: 60px; resize: none;
+    font-family: 'Heebo', sans-serif;
+    border-bottom: 1.5px dashed transparent; transition: border-color .2s;
+  }
+  .desc-text:hover, .desc-text:focus { border-color: #dcdce6; }
 
   .error { margin-top: 12px; color: #e74c6f; font-size: 13px; text-align: center; font-weight: 600; }
   .photo-count { font-size: 12px; color: var(--text-soft); text-align: center; margin-bottom: 8px; font-weight: 500; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
   .animate { animation: fadeUp .35s cubic-bezier(.22,.68,0,1); }
-
-  @keyframes shimmer {
-    0% { background-position: -200% center; }
-    100% { background-position: 200% center; }
-  }
-  .loading-btn {
-    background: linear-gradient(90deg, #667eea, #a78bfa, #667eea);
-    background-size: 200% auto;
-    animation: shimmer 1.8s linear infinite;
-  }
+  @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+  .loading-btn { background: linear-gradient(90deg, #667eea, #a78bfa, #667eea); background-size: 200% auto; animation: shimmer 1.8s linear infinite; }
 
   .hidden { display: none; }
-
-  .badge {
-    text-align: center; margin-top: 24px;
-    font-size: 11px; color: var(--text-soft); font-weight: 500;
-  }
-  .badge span {
-    background: var(--card); padding: 6px 14px; border-radius: 20px;
-    box-shadow: var(--shadow);
-  }
+  .badge { text-align: center; margin-top: 24px; font-size: 11px; color: var(--text-soft); font-weight: 500; }
+  .badge span { background: var(--card); padding: 6px 14px; border-radius: 20px; box-shadow: var(--shadow); }
 </style>
 </head>
 <body>
@@ -256,7 +247,7 @@
     </div>
   </div>
 
-  <!-- Step 2: Preview + Analyze -->
+  <!-- Step 2: Preview -->
   <div id="step-preview" class="hidden animate">
     <p class="photo-count" id="photo-count"></p>
     <div id="thumbs-container" class="thumbs-row"></div>
@@ -270,34 +261,77 @@
   <!-- Step 3: Result -->
   <div id="step-result" class="hidden animate">
     <div id="result-thumbs" class="thumbs-row"></div>
+
     <div class="card">
-      <h2 id="result-title" class="listing-title"></h2>
-      <div id="result-price" class="price-badge hidden">
-        <span class="label">💰 מחיר מומלץ:</span>
-        <span id="price-value"></span>
+      <!-- Language toggle -->
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="lang-he" onclick="switchLang('he')">🇮🇱 עברית</button>
+        <button class="lang-btn" id="lang-en" onclick="switchLang('en')">🇬🇧 English</button>
       </div>
+
+      <div class="edit-hint">✏️ לחצו על כל שדה כדי לערוך</div>
+
+      <div id="result-title" class="listing-title" contenteditable="true"></div>
+
+      <div id="result-price" class="price-badge hidden">
+        <span class="label">💰</span>
+        <input type="text" class="price-edit" id="price-value">
+      </div>
+
+      <!-- Tags -->
+      <div id="result-tags" class="tags-row"></div>
+
       <div id="result-fields" class="fields"></div>
+
       <div class="desc-block">
         <p class="desc-label">תיאור למודעה</p>
-        <p id="result-desc" class="desc-text"></p>
+        <textarea id="result-desc" class="desc-text" rows="3"></textarea>
       </div>
     </div>
+
     <div class="btn-row-3">
       <button class="btn btn-secondary" onclick="reset()">📷</button>
       <button id="copy-btn" class="btn btn-success" onclick="copyListing()">📋 העתק</button>
-      <button class="btn btn-whatsapp" onclick="shareWhatsApp()">💬 שתף בוואטסאפ</button>
+      <button class="btn btn-whatsapp" onclick="shareWhatsApp()">💬 וואטסאפ</button>
     </div>
     <div class="badge"><span>⚡ Powered by AI</span></div>
   </div>
 </div>
 
 <script>
-const SYSTEM_PROMPT = `אתה עוזר למכירת חפצים יד שנייה. המשתמש מצלם תמונה/תמונות של חפץ ואתה צריך לנתח אותו ולייצר פרטים למודעת מכירה.
+function getPrompt(lang) {
+  if (lang === 'en') return `You help people sell second-hand items. The user photographs an item and you analyze it to generate a sale listing.
 
-ענה אך ורק ב-JSON תקין בלי backticks או טקסט נוסף, בפורמט הבא:
+Respond ONLY with valid JSON, no backticks or extra text:
+{
+  "title": "Short catchy listing title",
+  "price_range": "XXX-XXX ₪",
+  "tags": ["category1", "category2"],
+  "fields": [
+    {"label": "Item Type", "value": "..."},
+    {"label": "Material", "value": "..."},
+    {"label": "Color", "value": "..."},
+    {"label": "Style", "value": "..."},
+    {"label": "Estimated Condition", "value": "..."},
+    {"label": "Estimated Dimensions", "value": "..."}
+  ],
+  "description": "2-3 sentence sale listing description"
+}
+
+Guidelines:
+- Add relevant extra fields based on item type (e.g. drawers for a desk, seating for a sofa, brand if identifiable, size for clothing).
+- In price_range give a realistic second-hand price range in Israeli Shekels (₪).
+- In tags provide 2-4 category tags like "Furniture", "Electronics", "Clothing", "Kitchen", "Sports", "Books", "Toys", "Decor", "Office", etc.
+- If there are multiple photos, analyze them together as the same item from different angles.
+- Write everything in English.`;
+
+  return `אתה עוזר למכירת חפצים יד שנייה. המשתמש מצלם תמונה/תמונות של חפץ ואתה צריך לנתח אותו ולייצר פרטים למודעת מכירה.
+
+ענה אך ורק ב-JSON תקין בלי backticks או טקסט נוסף:
 {
   "title": "כותרת קצרה וקולעת למודעה",
   "price_range": "XXX-XXX ₪",
+  "tags": ["קטגוריה1", "קטגוריה2"],
   "fields": [
     {"label": "סוג פריט", "value": "..."},
     {"label": "חומר", "value": "..."},
@@ -311,13 +345,16 @@ const SYSTEM_PROMPT = `אתה עוזר למכירת חפצים יד שנייה. 
 
 הנחיות:
 - הוסף שדות רלוונטיים נוספים לפי סוג הפריט (למשל מגירות לשולחן, מספר מקומות ישיבה לספה, מותג אם ניתן לזהות, מידה לבגדים).
-- ב-price_range תן טווח מחירים ריאלי בשקלים למכירה יד שנייה בישראל. קח בחשבון את סוג הפריט, המצב, והמותג (אם ניתן לזהות).
+- ב-price_range תן טווח מחירים ריאלי בשקלים למכירה יד שנייה בישראל.
+- ב-tags תן 2-4 תגיות קטגוריה כמו "ריהוט", "אלקטרוניקה", "ביגוד", "מטבח", "ספורט", "ספרים", "צעצועים", "עיצוב", "משרד" וכו'.
 - אם יש כמה תמונות, נתח את כולן ביחד כאילו הן של אותו פריט מזוויות שונות.
 - כתוב הכל בעברית.`;
+}
 
 const loadingMsgs = ["🔍 בוחן את הפריט...", "📐 מנתח פרטים...", "💰 מעריך מחיר...", "🏷️ כותב מודעה..."];
-let images = []; // {base64, media_type, dataUrl}
+let images = [];
 let currentListing = null;
+let currentLang = 'he';
 const MAX_PHOTOS = 3;
 
 const $ = id => document.getElementById(id);
@@ -343,40 +380,30 @@ $('file-camera').addEventListener('change', e => handleFiles(e.target.files));
 $('file-upload').addEventListener('change', e => handleFiles(e.target.files));
 
 function renderThumbs() {
-  const container = $('thumbs-container');
-  container.innerHTML = '';
-  images.forEach((img, idx) => {
-    container.innerHTML += `
-      <div class="thumb-wrap">
-        <img src="${img.dataUrl}" alt="Photo ${idx + 1}">
-        <button class="thumb-remove" onclick="removeImage(${idx})">✕</button>
-      </div>`;
+  const c = $('thumbs-container');
+  c.innerHTML = '';
+  images.forEach((img, i) => {
+    c.innerHTML += `<div class="thumb-wrap"><img src="${img.dataUrl}" alt=""><button class="thumb-remove" onclick="removeImage(${i})">✕</button></div>`;
   });
   if (images.length < MAX_PHOTOS) {
-    container.innerHTML += `
-      <div class="thumb-add" onclick="document.getElementById('file-add').click()">
-        +<span>${images.length}/${MAX_PHOTOS}</span>
-      </div>`;
+    c.innerHTML += `<div class="thumb-add" onclick="document.getElementById('file-add').click()">+<span>${images.length}/${MAX_PHOTOS}</span></div>`;
   }
-  $('photo-count').textContent = `${images.length} תמונה${images.length > 1 ? 'ות' : ''} נבחר${images.length > 1 ? 'ו' : 'ה'}`;
+  const countText = currentLang === 'en'
+    ? `${images.length} photo${images.length > 1 ? 's' : ''} selected`
+    : `${images.length} תמונה${images.length > 1 ? 'ות' : ''} נבחר${images.length > 1 ? 'ו' : 'ה'}`;
+  $('photo-count').textContent = countText;
 }
 
-function removeImage(idx) {
-  images.splice(idx, 1);
-  if (images.length === 0) {
-    reset();
-  } else {
-    renderThumbs();
-  }
+function removeImage(i) {
+  images.splice(i, 1);
+  if (images.length === 0) reset(); else renderThumbs();
 }
 
 function reset() {
-  images = [];
-  currentListing = null;
+  images = []; currentListing = null;
   $('file-camera').value = '';
   $('file-upload').value = '';
-  const addInput = $('file-add');
-  if (addInput) addInput.value = '';
+  const a = $('file-add'); if (a) a.value = '';
   $('step-upload').classList.remove('hidden');
   $('step-preview').classList.add('hidden');
   $('step-result').classList.add('hidden');
@@ -402,18 +429,13 @@ async function analyze() {
 
   try {
     const content = [];
-    images.forEach((img, i) => {
-      content.push({
-        type: 'image',
-        source: { type: 'base64', media_type: img.media_type, data: img.base64 }
-      });
+    images.forEach(img => {
+      content.push({ type: 'image', source: { type: 'base64', media_type: img.media_type, data: img.base64 } });
     });
-    content.push({
-      type: 'text',
-      text: images.length > 1
-        ? `אלו ${images.length} תמונות של אותו פריט מזוויות שונות. נתח אותן יחד למודעת מכירה אחת.`
-        : 'נתח את הפריט הזה למודעת מכירה.'
-    });
+    const userMsg = currentLang === 'en'
+      ? (images.length > 1 ? `These are ${images.length} photos of the same item from different angles. Analyze them together for one listing.` : 'Analyze this item for a sale listing.')
+      : (images.length > 1 ? `אלו ${images.length} תמונות של אותו פריט מזוויות שונות. נתח אותן יחד למודעת מכירה אחת.` : 'נתח את הפריט הזה למודעת מכירה.');
+    content.push({ type: 'text', text: userMsg });
 
     const res = await fetch('/api/analyze', {
       method: 'POST',
@@ -421,7 +443,7 @@ async function analyze() {
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
-        system: SYSTEM_PROMPT,
+        system: getPrompt(currentLang),
         messages: [{ role: 'user', content }]
       })
     });
@@ -444,44 +466,79 @@ async function analyze() {
 }
 
 function showResult() {
-  // Show small thumbs in result
-  const resultThumbs = $('result-thumbs');
-  resultThumbs.innerHTML = '';
+  const rt = $('result-thumbs');
+  rt.innerHTML = '';
   images.forEach((img, i) => {
-    resultThumbs.innerHTML += `<div class="thumb-wrap"><img src="${img.dataUrl}" alt="Photo ${i+1}"></div>`;
+    rt.innerHTML += `<div class="thumb-wrap"><img src="${img.dataUrl}" alt=""></div>`;
   });
 
   $('result-title').textContent = currentListing.title;
-  $('result-desc').textContent = currentListing.description;
+  $('result-desc').value = currentListing.description;
 
   // Price
   if (currentListing.price_range) {
-    $('price-value').textContent = currentListing.price_range;
+    $('price-value').value = currentListing.price_range;
     $('result-price').classList.remove('hidden');
   } else {
     $('result-price').classList.add('hidden');
   }
 
+  // Tags
+  const tagsEl = $('result-tags');
+  tagsEl.innerHTML = '';
+  if (currentListing.tags && currentListing.tags.length) {
+    currentListing.tags.forEach(t => {
+      tagsEl.innerHTML += `<span class="tag">${t}</span>`;
+    });
+  }
+
+  // Fields
   const fieldsEl = $('result-fields');
   fieldsEl.innerHTML = '';
-  currentListing.fields.forEach(f => {
-    fieldsEl.innerHTML += `<div class="field"><span class="field-label">${f.label}</span><span class="field-value">${f.value}</span></div>`;
+  currentListing.fields.forEach((f, i) => {
+    fieldsEl.innerHTML += `<div class="field"><span class="field-label">${f.label}</span><input class="field-value" data-idx="${i}" value="${f.value}"></div>`;
   });
 
   $('step-preview').classList.add('hidden');
   $('step-result').classList.remove('hidden');
 }
 
-function getListingText() {
-  if (!currentListing) return '';
-  const lines = [
-    currentListing.title, '',
-    ...currentListing.fields.map(f => `${f.label}: ${f.value}`),
-  ];
-  if (currentListing.price_range) {
-    lines.push('', '💰 מחיר: ' + currentListing.price_range);
+function switchLang(lang) {
+  if (lang === currentLang && currentListing) return;
+  currentLang = lang;
+  $('lang-he').classList.toggle('active', lang === 'he');
+  $('lang-en').classList.toggle('active', lang === 'en');
+
+  if (images.length > 0) {
+    // Re-analyze in new language
+    $('step-result').classList.add('hidden');
+    $('step-preview').classList.remove('hidden');
+    renderThumbs();
+    analyze();
   }
-  lines.push('', currentListing.description);
+}
+
+function getListingText() {
+  const title = $('result-title').textContent.trim();
+  const desc = $('result-desc').value.trim();
+  const price = $('price-value').value.trim();
+
+  const fieldInputs = document.querySelectorAll('.field-value');
+  const fieldLabels = document.querySelectorAll('.field-label');
+  const fieldLines = [];
+  fieldInputs.forEach((input, i) => {
+    const label = fieldLabels[i] ? fieldLabels[i].textContent.trim() : '';
+    fieldLines.push(`${label}: ${input.value}`);
+  });
+
+  const tags = [];
+  document.querySelectorAll('.tag').forEach(t => tags.push(t.textContent));
+
+  const lines = [title, ''];
+  if (tags.length) lines.push(tags.map(t => '#' + t.replace(/\s+/g, '_')).join(' '), '');
+  lines.push(...fieldLines);
+  if (price) lines.push('', '💰 ' + price);
+  lines.push('', desc);
   return lines.join('\n');
 }
 
@@ -498,11 +555,9 @@ function copyListing() {
 function shareWhatsApp() {
   const text = getListingText();
   if (!text) return;
-  const encoded = encodeURIComponent(text);
-  window.open('https://wa.me/?text=' + encoded, '_blank');
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
 }
 
-// Hidden input for adding more photos
 document.addEventListener('DOMContentLoaded', () => {
   const addInput = document.createElement('input');
   addInput.id = 'file-add';
