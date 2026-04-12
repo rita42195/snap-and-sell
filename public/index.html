@@ -81,15 +81,47 @@
   .drop-text { font-size: 16px; font-weight: 700; color: var(--text); }
   .drop-hint { font-size: 12px; color: var(--text-soft); margin-top: 5px; font-weight: 500; }
 
+  /* Multi-photo thumbnails */
+  .thumbs-row {
+    display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+  }
+  .thumb-wrap {
+    position: relative; width: 90px; height: 90px;
+    border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow);
+    flex-shrink: 0;
+  }
+  .thumb-wrap img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .thumb-remove {
+    position: absolute; top: 4px; left: 4px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(0,0,0,0.6); color: #fff;
+    border: none; font-size: 12px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Heebo', sans-serif;
+  }
+  .thumb-add {
+    width: 90px; height: 90px; border-radius: 12px;
+    border: 2px dashed #dcdce6; background: var(--card);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer; font-size: 24px; color: var(--accent);
+    flex-shrink: 0;
+  }
+  .thumb-add span { font-size: 10px; color: var(--text-soft); margin-top: 2px; }
+
   .img-wrap {
     border-radius: var(--radius); overflow: hidden;
     box-shadow: var(--shadow-lg); margin-bottom: 16px;
   }
   .preview-img { width: 100%; display: block; object-fit: cover; }
-  .preview-img.big { max-height: 340px; }
+  .preview-img.big { max-height: 280px; }
   .preview-img.small { max-height: 180px; }
 
   .btn-row { display: flex; gap: 10px; margin-top: 16px; }
+  .btn-row-3 { display: flex; gap: 8px; margin-top: 16px; }
   .btn {
     padding: 14px 18px; border: none; border-radius: var(--radius-sm);
     font-size: 14px; font-weight: 700; font-family: 'Heebo', sans-serif;
@@ -112,6 +144,11 @@
     background: linear-gradient(135deg, #10b981, #34d399);
     box-shadow: 0 4px 16px rgba(16,185,129,0.25);
   }
+  .btn-whatsapp {
+    flex: 1; color: #fff;
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    box-shadow: 0 4px 16px rgba(37,211,102,0.25);
+  }
 
   .card {
     background: var(--card);
@@ -127,6 +164,17 @@
     border-bottom: 2px solid transparent;
     border-image: var(--grad) 1;
   }
+
+  .price-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #92400e;
+    padding: 8px 16px; border-radius: 20px;
+    font-size: 16px; font-weight: 800;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(251,191,36,0.2);
+  }
+  .price-badge .label { font-size: 12px; font-weight: 600; }
 
   .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
   .field {
@@ -151,6 +199,7 @@
   .desc-text { font-size: 14px; line-height: 1.75; color: var(--text); font-weight: 500; }
 
   .error { margin-top: 12px; color: #e74c6f; font-size: 13px; text-align: center; font-weight: 600; }
+  .photo-count { font-size: 12px; color: var(--text-soft); text-align: center; margin-bottom: 8px; font-weight: 500; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
@@ -191,6 +240,7 @@
 </div>
 
 <div class="body">
+  <!-- Step 1: Upload -->
   <div id="step-upload" class="upload-options">
     <div class="drop-zone" onclick="document.getElementById('file-camera').click()">
       <div class="drop-icon">📷</div>
@@ -200,16 +250,16 @@
     </div>
     <div class="drop-zone" onclick="document.getElementById('file-upload').click()">
       <div class="drop-icon">🖼️</div>
-      <p class="drop-text">העלו תמונה מהגלריה</p>
-      <p class="drop-hint">JPG, PNG, WebP</p>
-      <input id="file-upload" type="file" accept="image/*" style="display:none">
+      <p class="drop-text">העלו תמונות מהגלריה</p>
+      <p class="drop-hint">עד 3 תמונות · JPG, PNG, WebP</p>
+      <input id="file-upload" type="file" accept="image/*" multiple style="display:none">
     </div>
   </div>
 
+  <!-- Step 2: Preview + Analyze -->
   <div id="step-preview" class="hidden animate">
-    <div class="img-wrap">
-      <img id="preview-img" class="preview-img big" src="" alt="">
-    </div>
+    <p class="photo-count" id="photo-count"></p>
+    <div id="thumbs-container" class="thumbs-row"></div>
     <div class="btn-row">
       <button class="btn btn-secondary" onclick="reset()">✕ נקה</button>
       <button id="analyze-btn" class="btn btn-primary" onclick="analyze()">✨ צור מודעה</button>
@@ -217,32 +267,37 @@
     <p id="error-msg" class="error hidden"></p>
   </div>
 
+  <!-- Step 3: Result -->
   <div id="step-result" class="hidden animate">
-    <div class="img-wrap">
-      <img id="result-img" class="preview-img small" src="" alt="">
-    </div>
+    <div id="result-thumbs" class="thumbs-row"></div>
     <div class="card">
       <h2 id="result-title" class="listing-title"></h2>
+      <div id="result-price" class="price-badge hidden">
+        <span class="label">💰 מחיר מומלץ:</span>
+        <span id="price-value"></span>
+      </div>
       <div id="result-fields" class="fields"></div>
       <div class="desc-block">
         <p class="desc-label">תיאור למודעה</p>
         <p id="result-desc" class="desc-text"></p>
       </div>
     </div>
-    <div class="btn-row">
-      <button class="btn btn-secondary" onclick="reset()">📷 חדש</button>
-      <button id="copy-btn" class="btn btn-success" onclick="copyListing()">📋 העתק מודעה</button>
+    <div class="btn-row-3">
+      <button class="btn btn-secondary" onclick="reset()">📷</button>
+      <button id="copy-btn" class="btn btn-success" onclick="copyListing()">📋 העתק</button>
+      <button class="btn btn-whatsapp" onclick="shareWhatsApp()">💬 שתף בוואטסאפ</button>
     </div>
     <div class="badge"><span>⚡ Powered by AI</span></div>
   </div>
 </div>
 
 <script>
-const SYSTEM_PROMPT = `אתה עוזר למכירת חפצים יד שנייה. המשתמש מצלם תמונה של חפץ ואתה צריך לנתח אותו ולייצר פרטים למודעת מכירה.
+const SYSTEM_PROMPT = `אתה עוזר למכירת חפצים יד שנייה. המשתמש מצלם תמונה/תמונות של חפץ ואתה צריך לנתח אותו ולייצר פרטים למודעת מכירה.
 
 ענה אך ורק ב-JSON תקין בלי backticks או טקסט נוסף, בפורמט הבא:
 {
   "title": "כותרת קצרה וקולעת למודעה",
+  "price_range": "XXX-XXX ₪",
   "fields": [
     {"label": "סוג פריט", "value": "..."},
     {"label": "חומר", "value": "..."},
@@ -254,37 +309,74 @@ const SYSTEM_PROMPT = `אתה עוזר למכירת חפצים יד שנייה. 
   "description": "תיאור של 2-3 משפטים למודעת מכירה"
 }
 
-הוסף שדות רלוונטיים נוספים לפי סוג הפריט (למשל מגירות לשולחן, מספר מקומות ישיבה לספה, מותג אם ניתן לזהות). כתוב הכל בעברית.`;
+הנחיות:
+- הוסף שדות רלוונטיים נוספים לפי סוג הפריט (למשל מגירות לשולחן, מספר מקומות ישיבה לספה, מותג אם ניתן לזהות, מידה לבגדים).
+- ב-price_range תן טווח מחירים ריאלי בשקלים למכירה יד שנייה בישראל. קח בחשבון את סוג הפריט, המצב, והמותג (אם ניתן לזהות).
+- אם יש כמה תמונות, נתח את כולן ביחד כאילו הן של אותו פריט מזוויות שונות.
+- כתוב הכל בעברית.`;
 
-const loadingMsgs = ["🔍 בוחן את הפריט...", "📐 מנתח פרטים...", "🏷️ כותב מודעה..."];
-let imageBase64 = null;
-let imageType = null;
+const loadingMsgs = ["🔍 בוחן את הפריט...", "📐 מנתח פרטים...", "💰 מעריך מחיר...", "🏷️ כותב מודעה..."];
+let images = []; // {base64, media_type, dataUrl}
 let currentListing = null;
+const MAX_PHOTOS = 3;
 
 const $ = id => document.getElementById(id);
 
-function handleFileInput(e) {
-  const file = e.target.files[0];
-  if (!file || !file.type.startsWith('image/')) return;
-  imageType = file.type;
-  const reader = new FileReader();
-  reader.onload = () => {
-    const dataUrl = reader.result;
-    imageBase64 = dataUrl.split(',')[1];
-    $('preview-img').src = dataUrl;
-    $('step-upload').classList.add('hidden');
-    $('step-preview').classList.remove('hidden');
-  };
-  reader.readAsDataURL(file);
+function handleFiles(files) {
+  for (let i = 0; i < files.length && images.length < MAX_PHOTOS; i++) {
+    const file = files[i];
+    if (!file || !file.type.startsWith('image/')) continue;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      const base64 = dataUrl.split(',')[1];
+      images.push({ base64, media_type: file.type, dataUrl });
+      renderThumbs();
+      $('step-upload').classList.add('hidden');
+      $('step-preview').classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
+  }
 }
 
-$('file-camera').addEventListener('change', handleFileInput);
-$('file-upload').addEventListener('change', handleFileInput);
+$('file-camera').addEventListener('change', e => handleFiles(e.target.files));
+$('file-upload').addEventListener('change', e => handleFiles(e.target.files));
+
+function renderThumbs() {
+  const container = $('thumbs-container');
+  container.innerHTML = '';
+  images.forEach((img, idx) => {
+    container.innerHTML += `
+      <div class="thumb-wrap">
+        <img src="${img.dataUrl}" alt="Photo ${idx + 1}">
+        <button class="thumb-remove" onclick="removeImage(${idx})">✕</button>
+      </div>`;
+  });
+  if (images.length < MAX_PHOTOS) {
+    container.innerHTML += `
+      <div class="thumb-add" onclick="document.getElementById('file-add').click()">
+        +<span>${images.length}/${MAX_PHOTOS}</span>
+      </div>`;
+  }
+  $('photo-count').textContent = `${images.length} תמונה${images.length > 1 ? 'ות' : ''} נבחר${images.length > 1 ? 'ו' : 'ה'}`;
+}
+
+function removeImage(idx) {
+  images.splice(idx, 1);
+  if (images.length === 0) {
+    reset();
+  } else {
+    renderThumbs();
+  }
+}
 
 function reset() {
-  imageBase64 = null; imageType = null; currentListing = null;
+  images = [];
+  currentListing = null;
   $('file-camera').value = '';
   $('file-upload').value = '';
+  const addInput = $('file-add');
+  if (addInput) addInput.value = '';
   $('step-upload').classList.remove('hidden');
   $('step-preview').classList.add('hidden');
   $('step-result').classList.add('hidden');
@@ -295,7 +387,7 @@ function reset() {
 }
 
 async function analyze() {
-  if (!imageBase64) return;
+  if (images.length === 0) return;
   const btn = $('analyze-btn');
   btn.disabled = true;
   $('error-msg').classList.add('hidden');
@@ -306,9 +398,23 @@ async function analyze() {
   const interval = setInterval(() => {
     msgIdx = (msgIdx + 1) % loadingMsgs.length;
     btn.textContent = loadingMsgs[msgIdx];
-  }, 2200);
+  }, 2000);
 
   try {
+    const content = [];
+    images.forEach((img, i) => {
+      content.push({
+        type: 'image',
+        source: { type: 'base64', media_type: img.media_type, data: img.base64 }
+      });
+    });
+    content.push({
+      type: 'text',
+      text: images.length > 1
+        ? `אלו ${images.length} תמונות של אותו פריט מזוויות שונות. נתח אותן יחד למודעת מכירה אחת.`
+        : 'נתח את הפריט הזה למודעת מכירה.'
+    });
+
     const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -316,13 +422,7 @@ async function analyze() {
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
         system: SYSTEM_PROMPT,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: imageType, data: imageBase64 } },
-            { type: 'text', text: 'נתח את הפריט הזה למודעת מכירה.' }
-          ]
-        }]
+        messages: [{ role: 'user', content }]
       })
     });
 
@@ -344,9 +444,23 @@ async function analyze() {
 }
 
 function showResult() {
-  $('result-img').src = $('preview-img').src;
+  // Show small thumbs in result
+  const resultThumbs = $('result-thumbs');
+  resultThumbs.innerHTML = '';
+  images.forEach((img, i) => {
+    resultThumbs.innerHTML += `<div class="thumb-wrap"><img src="${img.dataUrl}" alt="Photo ${i+1}"></div>`;
+  });
+
   $('result-title').textContent = currentListing.title;
   $('result-desc').textContent = currentListing.description;
+
+  // Price
+  if (currentListing.price_range) {
+    $('price-value').textContent = currentListing.price_range;
+    $('result-price').classList.remove('hidden');
+  } else {
+    $('result-price').classList.add('hidden');
+  }
 
   const fieldsEl = $('result-fields');
   fieldsEl.innerHTML = '';
@@ -358,19 +472,47 @@ function showResult() {
   $('step-result').classList.remove('hidden');
 }
 
-function copyListing() {
-  if (!currentListing) return;
+function getListingText() {
+  if (!currentListing) return '';
   const lines = [
     currentListing.title, '',
     ...currentListing.fields.map(f => `${f.label}: ${f.value}`),
-    '', currentListing.description
   ];
-  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+  if (currentListing.price_range) {
+    lines.push('', '💰 מחיר: ' + currentListing.price_range);
+  }
+  lines.push('', currentListing.description);
+  return lines.join('\n');
+}
+
+function copyListing() {
+  const text = getListingText();
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
     const btn = $('copy-btn');
     btn.textContent = '✓ הועתק!';
-    setTimeout(() => { btn.textContent = '📋 העתק מודעה'; }, 2000);
+    setTimeout(() => { btn.textContent = '📋 העתק'; }, 2000);
   });
 }
+
+function shareWhatsApp() {
+  const text = getListingText();
+  if (!text) return;
+  const encoded = encodeURIComponent(text);
+  window.open('https://wa.me/?text=' + encoded, '_blank');
+}
+
+// Hidden input for adding more photos
+document.addEventListener('DOMContentLoaded', () => {
+  const addInput = document.createElement('input');
+  addInput.id = 'file-add';
+  addInput.type = 'file';
+  addInput.accept = 'image/*';
+  addInput.multiple = true;
+  addInput.style.display = 'none';
+  addInput.addEventListener('change', e => handleFiles(e.target.files));
+  document.body.appendChild(addInput);
+});
 </script>
 </body>
 </html>
