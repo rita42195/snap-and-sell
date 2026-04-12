@@ -55,11 +55,13 @@
 
   .body { padding: 20px 16px 40px; max-width: 500px; margin: 0 auto; }
 
+  .upload-options { display: flex; flex-direction: column; gap: 10px; }
+
   .drop-zone {
     background: var(--card);
     border: 2px dashed #dcdce6;
     border-radius: var(--radius);
-    padding: 48px 24px;
+    padding: 36px 24px;
     text-align: center;
     cursor: pointer;
     transition: all .2s;
@@ -70,11 +72,11 @@
     background: rgba(102,126,234,0.03);
   }
   .drop-icon {
-    width: 68px; height: 68px; margin: 0 auto 14px;
+    width: 60px; height: 60px; margin: 0 auto 12px;
     background: var(--grad-light);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 28px;
+    font-size: 26px;
   }
   .drop-text { font-size: 16px; font-weight: 700; color: var(--text); }
   .drop-hint { font-size: 12px; color: var(--text-soft); margin-top: 5px; font-weight: 500; }
@@ -189,11 +191,19 @@
 </div>
 
 <div class="body">
-  <div id="step-upload" class="drop-zone" onclick="document.getElementById('file-input').click()">
-    <div class="drop-icon">📷</div>
-    <p class="drop-text">לחצו לצלם או להעלות תמונה</p>
-    <p class="drop-hint">JPG, PNG, WebP</p>
-    <input id="file-input" type="file" accept="image/*" capture="environment" style="display:none">
+  <div id="step-upload" class="upload-options">
+    <div class="drop-zone" onclick="document.getElementById('file-camera').click()">
+      <div class="drop-icon">📷</div>
+      <p class="drop-text">צלמו תמונה</p>
+      <p class="drop-hint">פתיחת מצלמה</p>
+      <input id="file-camera" type="file" accept="image/*" capture="environment" style="display:none">
+    </div>
+    <div class="drop-zone" onclick="document.getElementById('file-upload').click()">
+      <div class="drop-icon">🖼️</div>
+      <p class="drop-text">העלו תמונה מהגלריה</p>
+      <p class="drop-hint">JPG, PNG, WebP</p>
+      <input id="file-upload" type="file" accept="image/*" style="display:none">
+    </div>
   </div>
 
   <div id="step-preview" class="hidden animate">
@@ -253,7 +263,7 @@ let currentListing = null;
 
 const $ = id => document.getElementById(id);
 
-$('file-input').addEventListener('change', e => {
+function handleFileInput(e) {
   const file = e.target.files[0];
   if (!file || !file.type.startsWith('image/')) return;
   imageType = file.type;
@@ -266,11 +276,15 @@ $('file-input').addEventListener('change', e => {
     $('step-preview').classList.remove('hidden');
   };
   reader.readAsDataURL(file);
-});
+}
+
+$('file-camera').addEventListener('change', handleFileInput);
+$('file-upload').addEventListener('change', handleFileInput);
 
 function reset() {
   imageBase64 = null; imageType = null; currentListing = null;
-  $('file-input').value = '';
+  $('file-camera').value = '';
+  $('file-upload').value = '';
   $('step-upload').classList.remove('hidden');
   $('step-preview').classList.add('hidden');
   $('step-result').classList.add('hidden');
